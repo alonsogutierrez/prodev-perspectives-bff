@@ -10,6 +10,7 @@ export interface PostData {
   readTime: string;
   authorName: string;
   authorImg: string;
+  authorDesignation: string;
   authorBio: string;
   authorSocial: Array<any>;
   tags: Array<string>;
@@ -34,6 +35,7 @@ export class PostEntity implements Post {
   readTime: string;
   authorName: string;
   authorImg: string;
+  authorDesignation: string;
   authorBio: string;
   authorSocial: Array<any>;
   tags: Array<string>;
@@ -53,6 +55,7 @@ export class PostEntity implements Post {
     readTime: string,
     authorName: string,
     authorImg: string,
+    authorDesignation: string,
     authorBio: string,
     authorSocial: Array<any>,
     tags: Array<string>,
@@ -71,6 +74,7 @@ export class PostEntity implements Post {
     this.readTime = readTime;
     this.authorName = authorName;
     this.authorImg = authorImg;
+    this.authorDesignation = authorDesignation;
     this.authorBio = authorBio;
     this.authorSocial = authorSocial;
     this.tags = tags;

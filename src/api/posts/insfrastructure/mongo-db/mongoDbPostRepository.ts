@@ -1,45 +1,37 @@
-import mongoose from 'mongoose';
-
-import { Post } from '../../domain/entities/post';
+import { PostData } from '../../domain/entities/post';
 import { PostsRepositoryInterface } from '../../domain/interfaces/postsRepositoryInterface';
+import { Post } from './models/postSchema';
 
 const logger = console;
 
-const MONGO_DB_USER: string = process.env.MONGO_DB_URI!;
-const MONGO_DB_PASSWORD: string = process.env.MONGO_DB_PASSWORD!;
-const MONGO_DB_PATH: string = process.env.MONGO_DB_PATH!;
-
 class MongoDbPostRepository implements PostsRepositoryInterface {
-  async connectDB() {
-    try {
-      await mongoose.connect(
-        `mongodb://${MONGO_DB_USER}:${MONGO_DB_PASSWORD}${MONGO_DB_PATH}`
-      );
-      logger.info('Well connected with MongoDB');
-    } catch (error) {
-      const message: string = 'Error connecting with MongoDB';
-      let errorMessage: string = '';
-      if (error instanceof Error) {
-        errorMessage = error.message;
-      }
-      console.error(`${message}:`, errorMessage);
-      throw new Error(`${message}: ${errorMessage}`);
-    }
+  async getAllPosts(
+    page: number = 0,
+    limit: number = 10
+  ): Promise<PostData[] | null> {
+    logger.info('STARTING TO GET ALL POSTS FROM MONGO DB');
+    const startTime = Date.now();
+    const posts: Array<any> = await Post.find()
+      .sort({ createdAt: -1 })
+      .limit(limit)
+      .skip(page);
+    const duration = Date.now() - startTime;
+    logger.info('FINISH TO GET ALL POSTS FROM MONGO DB: ', duration);
+    return new Promise((resolve, reject) => resolve(posts));
   }
 
-  getAllPosts(): Promise<Post[] | null> {
+  // TODO: Implement save post logic
+  savePost(post: PostData): Promise<null> {
     return new Promise((resolve, reject) => resolve(null));
   }
 
-  savePost(post: Post): Promise<null> {
+  // TODO: Implement get post by id logic
+  getPostsById(postId: string): Promise<PostData | null> {
     return new Promise((resolve, reject) => resolve(null));
   }
 
-  getPostsById(postId: string): Promise<Post | null> {
-    return new Promise((resolve, reject) => resolve(null));
-  }
-
-  updatePostById(postId: string, post: Post): Promise<Post | null> {
+  // TODO: Implement update post by id logic
+  updatePostById(postId: string, post: PostData): Promise<PostData | null> {
     return new Promise((resolve, reject) => resolve(null));
   }
 }

@@ -23,6 +23,21 @@ class PostsUseCases {
       throw new Error(`${message}: ${errorMessage}`);
     }
   }
+
+  async savePost(postData: PostData): Promise<PostData | null> {
+    try {
+      const post: PostData = await this.postRepository.savePost(postData);
+      return post;
+    } catch (error) {
+      const message: string = 'Error trying to save post';
+      let errorMessage: string = '';
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+      logger.error(`${message}:`, errorMessage);
+      throw new Error(`${message}: ${errorMessage}`);
+    }
+  }
 }
 
 export default PostsUseCases;

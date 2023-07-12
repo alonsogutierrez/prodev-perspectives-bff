@@ -5,7 +5,7 @@ import MongoDbPostRepository from './mongo-db/mongoDbPostRepository';
 
 const postsRouter = express.Router();
 
-// GET Posts route
+// GET Posts
 postsRouter.get('/posts', async (req: Request, res: Response) => {
   try {
     const postRepository: MongoDbPostRepository = new MongoDbPostRepository();
@@ -16,6 +16,22 @@ postsRouter.get('/posts', async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).send({
       error: 'Cant get all posts, internal error',
+    });
+  }
+});
+
+// POST Posts
+postsRouter.post('/posts', async (req: Request, res: Response) => {
+  try {
+    const postData = req.body;
+    const postRepository: MongoDbPostRepository = new MongoDbPostRepository();
+    const postsUseCases: PostsUseCases = new PostsUseCases(postRepository);
+    const post: PostData | null = await postsUseCases.savePost(postData);
+
+    res.send(post);
+  } catch (error: any) {
+    res.status(500).send({
+      error: 'Cant save all posts, internal error',
     });
   }
 });

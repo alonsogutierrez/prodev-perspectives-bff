@@ -3,7 +3,7 @@ import { PostData } from '../entities/post';
 export interface PostsRepositoryInterface {
   getAllPosts(): Promise<Array<PostData> | null>;
 
-  savePost(post: PostData): Promise<null>;
+  savePost(post: PostData): Promise<any>;
 
   getPostsById(postId: string): Promise<PostData | null>;
 

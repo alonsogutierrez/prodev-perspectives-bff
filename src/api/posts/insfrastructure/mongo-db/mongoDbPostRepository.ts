@@ -9,20 +9,21 @@ class MongoDbPostRepository implements PostsRepositoryInterface {
     page: number = 0,
     limit: number = 10
   ): Promise<PostData[] | null> {
-    logger.info('STARTING TO GET ALL POSTS FROM MONGO DB');
     const startTime = Date.now();
     const posts: Array<any> = await Post.find()
       .sort({ createdAt: -1 })
       .limit(limit)
       .skip(page);
     const duration = Date.now() - startTime;
-    logger.info('FINISH TO GET ALL POSTS FROM MONGO DB: ', duration);
+    logger.info('ALL POSTS WELL OBTAINED FROM DB: ', duration);
     return new Promise((resolve, reject) => resolve(posts));
   }
 
   // TODO: Implement save post logic
-  savePost(post: PostData): Promise<null> {
-    return new Promise((resolve, reject) => resolve(null));
+  async savePost(postData: PostData): Promise<any> {
+    const post = new Post(postData);
+    await post.save();
+    logger.info('POST DOCUMENT WELL SAVED INTO DB');
   }
 
   // TODO: Implement get post by id logic

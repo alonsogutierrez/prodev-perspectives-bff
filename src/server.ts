@@ -6,10 +6,10 @@ import postsRouter from './api/posts/insfrastructure/routes';
 
 import MongoDbClient from './api/shared/insfrastructure/mongoDbClient';
 
+const logger = console;
 dotenv.config();
 
 const app = express();
-const logger = console;
 
 try {
   const mongoDBRepo: MongoDbClient = new MongoDbClient();
@@ -18,6 +18,10 @@ try {
   throw new Error(`Error connecting with MongoDB: ${err?.message}`);
 }
 
+// Middleware to parse JSON request bodies
+app.use(express.json());
+
+// Routers
 app.use(healthRouter);
 app.use(postsRouter);
 

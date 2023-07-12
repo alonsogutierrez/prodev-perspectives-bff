@@ -19,21 +19,34 @@ class MongoDbPostRepository implements PostsRepositoryInterface {
     return new Promise((resolve, reject) => resolve(posts));
   }
 
-  // TODO: Implement save post logic
   async savePost(postData: PostData): Promise<any> {
     const post = new Post(postData);
     await post.save();
     logger.info('POST DOCUMENT WELL SAVED INTO DB');
   }
 
-  // TODO: Implement get post by id logic
-  getPostsById(postId: string): Promise<PostData | null> {
-    return new Promise((resolve, reject) => resolve(null));
+  async getPostById(postId: string): Promise<PostData | null> {
+    const startTime = Date.now();
+    const posts: Array<any> = await Post.find({
+      _id: postId,
+    }).sort({ createdAt: -1 });
+    const duration = Date.now() - startTime;
+    logger.info('POST WELL OBTAINED FROM DB: ', duration);
+    return new Promise((resolve, reject) => resolve(posts[0]));
   }
 
-  // TODO: Implement update post by id logic
-  updatePostById(postId: string, post: PostData): Promise<PostData | null> {
-    return new Promise((resolve, reject) => resolve(null));
+  async updatePostById(postId: string, post: PostData): Promise<string> {
+    await Post.findByIdAndUpdate(postId, post, {
+      new: true,
+    });
+    logger.info('PUT DOCUMENT WELL UPDATED INTO DB');
+    return postId;
+  }
+
+  async deletePostById(postId: string): Promise<string> {
+    await Post.findByIdAndDelete(postId);
+    logger.info('DELETE DOCUMENT WELL DELETED INTO DB');
+    return postId;
   }
 }
 

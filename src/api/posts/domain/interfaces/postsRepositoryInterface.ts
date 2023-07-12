@@ -5,7 +5,9 @@ export interface PostsRepositoryInterface {
 
   savePost(post: PostData): Promise<any>;
 
-  getPostsById(postId: string): Promise<PostData | null>;
+  getPostById(postId: string): Promise<PostData | null>;
 
-  updatePostById(postId: string, post: PostData): Promise<PostData | null>;
+  updatePostById(postId: string, post: PostData): Promise<string>;
+
+  deletePostById(postId: string): Promise<string>;
 }

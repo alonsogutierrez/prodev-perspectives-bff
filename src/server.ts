@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 
 import healthRouter from './api/health/insfrastructure/route';
 import postsRouter from './api/posts/insfrastructure/routes';
+import usersRouter from './api/users/insfrastructure/routes';
 
 import MongoDbClient from './api/shared/insfrastructure/mongoDbClient';
 
@@ -24,6 +25,7 @@ app.use(express.json());
 // Routers
 app.use(healthRouter);
 app.use(postsRouter);
+app.use(usersRouter);
 
 const port = process.env.PORT || 3001;
 app.listen(port, () => {

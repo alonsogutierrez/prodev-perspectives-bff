@@ -24,12 +24,60 @@ class PostsUseCases {
     }
   }
 
+  async getPostById(postId: string): Promise<PostData | null> {
+    try {
+      const post: PostData | null = await this.postRepository.getPostById(
+        postId
+      );
+      logger.info('Post well obtained: ', post);
+      return post;
+    } catch (error) {
+      const message: string = 'Error trying to get post by id';
+      let errorMessage: string = '';
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+      logger.error(`${message}:`, errorMessage);
+      throw new Error(`${message}: ${errorMessage}`);
+    }
+  }
+
   async savePost(postData: PostData): Promise<PostData | null> {
     try {
       const post: PostData = await this.postRepository.savePost(postData);
       return post;
     } catch (error) {
       const message: string = 'Error trying to save post';
+      let errorMessage: string = '';
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+      logger.error(`${message}:`, errorMessage);
+      throw new Error(`${message}: ${errorMessage}`);
+    }
+  }
+
+  async updatePost(id: string, postData: PostData): Promise<string | null> {
+    try {
+      await this.postRepository.updatePostById(id, postData);
+      return id;
+    } catch (error) {
+      const message: string = 'Error trying to update post';
+      let errorMessage: string = '';
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+      logger.error(`${message}:`, errorMessage);
+      throw new Error(`${message}: ${errorMessage}`);
+    }
+  }
+
+  async deletePostById(id: string): Promise<string | null> {
+    try {
+      await this.postRepository.deletePostById(id);
+      return id;
+    } catch (error) {
+      const message: string = 'Error trying to delete post';
       let errorMessage: string = '';
       if (error instanceof Error) {
         errorMessage = error.message;

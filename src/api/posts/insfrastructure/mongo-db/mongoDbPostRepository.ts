@@ -30,7 +30,6 @@ class MongoDbPostRepository implements PostsRepositoryInterface {
         'authorBio',
         'authorSocial',
         'tags',
-        'content',
         'uuid',
         'slug',
       ],
@@ -65,6 +64,40 @@ class MongoDbPostRepository implements PostsRepositoryInterface {
     const posts: Array<any> = await Post.find({
       uuid: postUUID,
     }).sort({ createdAt: -1 });
+    const duration = Date.now() - startTime;
+    logger.info('POST WELL OBTAINED FROM DB: ', duration);
+    return new Promise((resolve, reject) => resolve(posts[0]));
+  }
+
+  async getPostBySlug(postSlug: string): Promise<PostData | null> {
+    const startTime = Date.now();
+    const posts: Array<any> = await Post.find(
+      {
+        slug: postSlug,
+      },
+      [
+        '_id',
+        'postFormat',
+        'title',
+        'featureImg',
+        'date',
+        'category',
+        'categoryName',
+        'categoryImg',
+        'postViews',
+        'readTime',
+        'authorName',
+        'authorImg',
+        'authorDesignation',
+        'authorBio',
+        'authorSocial',
+        'tags',
+        'uuid',
+        'content',
+        'slug',
+      ],
+      {}
+    ).sort({ createdAt: -1 });
     const duration = Date.now() - startTime;
     logger.info('POST WELL OBTAINED FROM DB: ', duration);
     return new Promise((resolve, reject) => resolve(posts[0]));

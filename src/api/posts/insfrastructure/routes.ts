@@ -21,18 +21,18 @@ postsRouter.get('/posts', async (req: Request, res: Response) => {
   }
 });
 
-// GET Post by id
-postsRouter.get('/posts/:id', async (req: Request, res: Response) => {
+// GET Post by slug
+postsRouter.get('/posts/:slug', async (req: Request, res: Response) => {
   try {
-    const postId: string = req.params.id;
+    const postSlug: string = req.params.slug;
     const postRepository: MongoDbPostRepository = new MongoDbPostRepository();
     const postsUseCases: PostsUseCases = new PostsUseCases(postRepository);
-    const post: PostData | null = await postsUseCases.getPostById(postId);
+    const post: PostData | null = await postsUseCases.getPostBySlug(postSlug);
 
     res.send(post);
   } catch (error) {
     res.status(404).send({
-      error: 'Cant get post by id',
+      error: 'Cant get post by slug',
     });
   }
 });

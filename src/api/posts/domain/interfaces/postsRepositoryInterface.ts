@@ -9,6 +9,8 @@ export interface PostsRepositoryInterface {
 
   getPostByUUID(postUUID: string): Promise<PostData | null>;
 
+  getPostBySlug(postSlug: string): Promise<PostData | null>;
+
   updatePostById(postId: string, post: PostData): Promise<string>;
 
   deletePostById(postId: string): Promise<string>;

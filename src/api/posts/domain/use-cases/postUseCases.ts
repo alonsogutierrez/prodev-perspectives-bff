@@ -61,6 +61,24 @@ class PostsUseCases {
     }
   }
 
+  async getPostBySlug(postSLug: string): Promise<PostData | null> {
+    try {
+      const post: PostData | null = await this.postRepository.getPostBySlug(
+        postSLug
+      );
+      logger.info('Post well obtained: ', post);
+      return post;
+    } catch (error) {
+      const message: string = 'Error trying to get post by slug';
+      let errorMessage: string = '';
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+      logger.error(`${message}:`, errorMessage);
+      throw new Error(`${message}: ${errorMessage}`);
+    }
+  }
+
   async savePost(postData: PostData): Promise<PostData | null> {
     try {
       const uuid = uuidv4();

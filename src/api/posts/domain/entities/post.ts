@@ -16,13 +16,14 @@ export interface PostData {
   tags: Array<string>;
   content: string;
   uuid: string;
+  slug: string;
 }
 
-export interface Post extends PostData {
+export interface PostI extends PostData {
   id: string;
 }
 
-export class PostEntity implements Post {
+export class PostEntity implements PostI {
   id: string;
   postFormat: string;
   title: string;
@@ -41,6 +42,7 @@ export class PostEntity implements Post {
   tags: Array<string>;
   content: string;
   uuid: string;
+  slug: string;
 
   constructor(
     id: string,
@@ -60,7 +62,8 @@ export class PostEntity implements Post {
     authorSocial: Array<any>,
     tags: Array<string>,
     content: string,
-    uuid: string
+    uuid: string,
+    slug: string
   ) {
     this.id = id;
     this.postFormat = postFormat;
@@ -80,5 +83,6 @@ export class PostEntity implements Post {
     this.tags = tags;
     this.content = content;
     this.uuid = uuid;
+    this.slug = slug;
   }
 }

@@ -19,6 +19,7 @@ export const postSchema = new Schema(
     tags: [String],
     content: { type: String, required: true },
     uuid: { type: String, required: true },
+    slug: { type: String, required: true }
   },
   {
     timestamps: true,

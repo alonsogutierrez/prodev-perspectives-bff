@@ -1,4 +1,4 @@
-import { PostData } from '../../domain/entities/post';
+import { PostData, PostI } from '../../domain/entities/post';
 import { PostsRepositoryInterface } from '../../domain/interfaces/postsRepositoryInterface';
 import { Post } from './models/postSchema';
 
@@ -10,7 +10,32 @@ class MongoDbPostRepository implements PostsRepositoryInterface {
     limit: number = 10
   ): Promise<PostData[] | null> {
     const startTime = Date.now();
-    const posts: Array<any> = await Post.find()
+    const posts: Array<PostData> = await Post.find(
+      {},
+      // Projection fields
+      [
+        '_id',
+        'postFormat',
+        'title',
+        'featureImg',
+        'date',
+        'category',
+        'categoryName',
+        'categoryImg',
+        'postViews',
+        'readTime',
+        'authorName',
+        'authorImg',
+        'authorDesignation',
+        'authorBio',
+        'authorSocial',
+        'tags',
+        'content',
+        'uuid',
+        'slug',
+      ],
+      {}
+    )
       .sort({ createdAt: -1 })
       .limit(limit)
       .skip(page);
@@ -29,6 +54,16 @@ class MongoDbPostRepository implements PostsRepositoryInterface {
     const startTime = Date.now();
     const posts: Array<any> = await Post.find({
       _id: postId,
+    }).sort({ createdAt: -1 });
+    const duration = Date.now() - startTime;
+    logger.info('POST WELL OBTAINED FROM DB: ', duration);
+    return new Promise((resolve, reject) => resolve(posts[0]));
+  }
+
+  async getPostByUUID(postUUID: string): Promise<PostData | null> {
+    const startTime = Date.now();
+    const posts: Array<any> = await Post.find({
+      uuid: postUUID,
     }).sort({ createdAt: -1 });
     const duration = Date.now() - startTime;
     logger.info('POST WELL OBTAINED FROM DB: ', duration);

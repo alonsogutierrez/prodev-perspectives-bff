@@ -8,7 +8,7 @@
     "build": "tsc",
     "build:watch": "tsc --watch",
     "server": "nodemon dist/server.js",
-    "test": "jest --watchAll --collectCoverage"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",

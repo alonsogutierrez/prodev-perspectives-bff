@@ -14,7 +14,9 @@
     "node": "14.x"
   },
   "keywords": [
-    "typescript-bff"
+    "typescript-bff",
+    "nodejs",
+    "backend"
   ],
   "author": "Alonso G",
   "license": "ISC",

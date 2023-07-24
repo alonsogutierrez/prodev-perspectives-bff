@@ -1,0 +1,27 @@
+{
+  "postFormat": "standard",
+  "title": "Exploring Clean Architecture: Benefits, Pros and Cons, Implementation, and Real-World Examples v2",
+  "featureImg": "/images/posts/architecture-image.png",
+  "date": "May 20 2023",
+  "category": "software-architecture",
+  "categoryName": "Software Architecture",
+  "categoryImg": "/images/posts/architecture-image.png",
+  "postViews": 3000,
+  "readTime": "15 min read",
+  "authorName": "Alonso Gutiérrez",
+  "authorImg": "/images/posts/author/foto-alonso-feliz.jpg",
+  "authorDesignation": "Sr. Software Developer",
+  "authorBio": "At 30 years old, my favorite time is play with my daughther and wife, they are everything for me, without my family I won’t have the motivation to generate my own blog of software engineering topics.",
+  "authorSocial": [
+    {
+      "icon": "fas fa-link",
+      "url": "https://www.linkedin.com/in/alonso-guti%C3%A9rrez-b27370126/"
+    },
+    {
+      "icon": "fas fa-github",
+      "url": "https://github.com/alonsogutierrez"
+    }
+  ],
+  "tags": ["Software Architecture", "Clean Architecture"],
+  "content": "mock content"
+}

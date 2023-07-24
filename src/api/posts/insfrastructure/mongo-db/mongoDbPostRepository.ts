@@ -4,7 +4,7 @@ import { Post } from './models/postSchema';
 
 const logger = console;
 
-class MongoDbPostRepository implements PostsRepositoryInterface {
+export class MongoDbPostRepository implements PostsRepositoryInterface {
   async getAllPosts(
     page: number = 0,
     limit: number = 10
@@ -117,5 +117,3 @@ class MongoDbPostRepository implements PostsRepositoryInterface {
     return postId;
   }
 }
-
-export default MongoDbPostRepository;

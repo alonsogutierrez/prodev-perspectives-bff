@@ -13,7 +13,6 @@ try {
 } catch (err: any) {
   throw new Error(`Error connecting with MongoDB: ${err?.message}`);
 }
-
 // Middleware to parse JSON request bodies
 app.use(express.json());
 

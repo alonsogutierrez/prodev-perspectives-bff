@@ -1,8 +1,10 @@
 import express, { Request, Response } from 'express';
 import { PostData } from '../domain/entities/post';
 import PostsUseCases from '../domain/use-cases/postUseCases';
-import MongoDbPostRepository from './mongo-db/mongoDbPostRepository';
+import { MongoDbPostRepository } from './mongo-db/mongoDbPostRepository';
 import { auth } from './../../shared/auth_middleware';
+
+const logger = console;
 
 const postsRouter = express.Router();
 
@@ -47,6 +49,7 @@ postsRouter.post('/posts', auth, async (req: any, res: Response) => {
 
     res.send(post);
   } catch (error: any) {
+    logger.error('Cant save all posts, internal error: ', error.message);
     res.status(500).send({
       error: 'Cant save all posts, internal error',
     });

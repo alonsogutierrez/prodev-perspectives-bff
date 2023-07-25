@@ -2,11 +2,12 @@
   "name": "prodev-blog-bff",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "server.ts",
   "scripts": {
-    "start": "concurrently \"npm run build:watch\" \"npm run server\"",
+    "start": "node ./dist/server.js",
     "build": "tsc --project tsconfig.build.json",
-    "build:watch": "tsc --watch",
+    "build:watch": "tsc --watch --project tsconfig.build.json",
+    "startDev": "concurrently \"npm run build:watch\" \"npm run server\"",
     "server": "nodemon dist/server.js",
     "test": "jest"
   },

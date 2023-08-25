@@ -17,14 +17,7 @@ jest.mock(
 
 // Mock MongoDbPostRepository
 jest.mock(
-  '../../../../../src/api/posts/insfrastructure/mongo-db/mongoDbPostRepository',
-  () => {
-    return {
-      MongoDbPostRepository: jest.fn().mockImplementation(() => ({
-        savePost: jest.fn().mockResolvedValue({}),
-      })),
-    };
-  }
+  '../../../../../src/api/posts/insfrastructure/mongo-db/mongoDbPostRepository'
 );
 
 describe('Integration test to create post', () => {
@@ -42,6 +35,9 @@ describe('Integration test to create post', () => {
       email: 'test@example.com',
     });
 
+    const mockSavePost = jest.fn();
+    MongoDbPostRepository.prototype.savePost = mockSavePost;
+
     const res = await request(app)
       .post('/posts')
       .set('Authorization', 'Bearer valid_token')
@@ -49,6 +45,50 @@ describe('Integration test to create post', () => {
 
     expect(res.status).toBe(200);
     expect(mockJwtVerify).toHaveBeenCalledWith('valid_token', 'secret-key');
-    expect(MongoDbPostRepository).toBeCalledTimes(1);
+    expect(mockSavePost).toBeCalledTimes(1);
+  });
+});
+
+describe('Integration test to get post', () => {
+  test('should return status code 200 when db response ok', async () => {
+    const mockGetAllPosts = jest.fn();
+    MongoDbPostRepository.prototype.getAllPosts = mockGetAllPosts;
+    const res = await request(app).get('/posts');
+
+    expect(res.status).toBe(200);
+    expect(mockGetAllPosts).toBeCalledTimes(1);
+  });
+});
+
+describe('Integration test to get post by slug', () => {
+  test('should return status code 200 when db response ok', async () => {
+    const mockGetPostBySlug = jest.fn();
+    MongoDbPostRepository.prototype.getPostBySlug = mockGetPostBySlug;
+    const res = await request(app).get('/posts/mock-slug-post-title');
+
+    expect(res.status).toBe(200);
+    expect(mockGetPostBySlug).toBeCalledTimes(1);
+  });
+});
+
+describe('Integration test to put post by slug', () => {
+  test('should return status code 201 when db response ok', async () => {
+    const mockPutPostBySlug = jest.fn();
+    MongoDbPostRepository.prototype.updatePostById = mockPutPostBySlug;
+    const res = await request(app).put('/posts/mock-slug-post-title');
+
+    expect(res.status).toBe(201);
+    expect(mockPutPostBySlug).toBeCalledTimes(1);
+  });
+});
+
+describe('Integration test to delete post by slug', () => {
+  test('should return status code 201 when db response ok', async () => {
+    const mockDelPostBySlug = jest.fn();
+    MongoDbPostRepository.prototype.deletePostById = mockDelPostBySlug;
+    const res = await request(app).del('/posts/mock-slug-post-title');
+
+    expect(res.status).toBe(201);
+    expect(mockDelPostBySlug).toBeCalledTimes(1);
   });
 });

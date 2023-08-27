@@ -47,7 +47,7 @@ postsRouter.post('/posts', auth, async (req: any, res: Response) => {
     const postsUseCases: PostsUseCases = new PostsUseCases(postRepository);
     const post: PostData | null = await postsUseCases.savePost(postData);
 
-    res.send(post);
+    res.status(201).send(post);
   } catch (error: any) {
     logger.error('Cant save all posts, internal error: ', error.message);
     res.status(500).send({

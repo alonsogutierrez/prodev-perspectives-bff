@@ -43,7 +43,7 @@ describe('Integration test to create post', () => {
       .set('Authorization', 'Bearer valid_token')
       .send(postMock);
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(201);
     expect(mockJwtVerify).toHaveBeenCalledWith('valid_token', 'secret-key');
     expect(mockSavePost).toBeCalledTimes(1);
   });

@@ -76,7 +76,7 @@ postsRouter.post("/posts", auth, async (req: any, res: Response) => {
   }
 });
 
-// PUT Post
+// PUT Post: Update post
 postsRouter.put("/posts/:id", auth, async (req: Request, res: Response) => {
   try {
     const id: string = req.params.id;

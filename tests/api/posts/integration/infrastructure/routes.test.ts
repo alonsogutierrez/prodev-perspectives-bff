@@ -75,7 +75,7 @@ describe("Integration test to put post by slug", () => {
   test("should return status code 201 when db response ok", async () => {
     const mockPutPostBySlug = jest.fn();
     MongoDbPostRepository.prototype.updatePostById = mockPutPostBySlug;
-    const res = await request(app).put("/posts/slug/mock-slug-post-title");
+    const res = await request(app).put("/posts/123123213");
 
     expect(res.status).toBe(201);
     expect(mockPutPostBySlug).toBeCalledTimes(1);
@@ -86,7 +86,7 @@ describe("Integration test to delete post by slug", () => {
   test("should return status code 201 when db response ok", async () => {
     const mockDelPostBySlug = jest.fn();
     MongoDbPostRepository.prototype.deletePostById = mockDelPostBySlug;
-    const res = await request(app).del("/posts/slug/mock-slug-post-title");
+    const res = await request(app).del("/posts/123123213");
 
     expect(res.status).toBe(201);
     expect(mockDelPostBySlug).toBeCalledTimes(1);

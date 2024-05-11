@@ -1,6 +1,6 @@
-import { PostData, PostI } from '../../domain/entities/post';
-import { PostsRepositoryInterface } from '../../domain/interfaces/postsRepositoryInterface';
-import { Post } from './models/postSchema';
+import { PostData, PostI } from "../../domain/entities/post";
+import { PostsRepositoryInterface } from "../../domain/interfaces/postsRepositoryInterface";
+import { Post } from "./models/postSchema";
 
 const logger = console;
 
@@ -14,24 +14,24 @@ export class MongoDbPostRepository implements PostsRepositoryInterface {
       {},
       // Projection fields
       [
-        '_id',
-        'postFormat',
-        'title',
-        'featureImg',
-        'date',
-        'category',
-        'categoryName',
-        'categoryImg',
-        'postViews',
-        'readTime',
-        'authorName',
-        'authorImg',
-        'authorDesignation',
-        'authorBio',
-        'authorSocial',
-        'tags',
-        'uuid',
-        'slug',
+        "_id",
+        "postFormat",
+        "title",
+        "featureImg",
+        "date",
+        "category",
+        "categoryName",
+        "categoryImg",
+        "postViews",
+        "readTime",
+        "authorName",
+        "authorImg",
+        "authorDesignation",
+        "authorBio",
+        "authorSocial",
+        "tags",
+        "uuid",
+        "slug",
       ],
       {}
     )
@@ -39,33 +39,23 @@ export class MongoDbPostRepository implements PostsRepositoryInterface {
       .limit(limit)
       .skip(page);
     const duration = Date.now() - startTime;
-    logger.info('ALL POSTS WELL OBTAINED FROM DB: ', duration);
     return new Promise((resolve, reject) => resolve(posts));
   }
 
   async savePost(postData: PostData): Promise<any> {
     const post = new Post(postData);
     await post.save();
-    logger.info('POST DOCUMENT WELL SAVED INTO DB');
   }
 
   async getPostById(postId: string): Promise<PostData | null> {
-    const startTime = Date.now();
-    const posts: Array<any> = await Post.find({
-      _id: postId,
-    }).sort({ createdAt: -1 });
-    const duration = Date.now() - startTime;
-    logger.info('POST WELL OBTAINED FROM DB: ', duration);
-    return new Promise((resolve, reject) => resolve(posts[0]));
+    const post: any = await Post.findById(postId);
+    return new Promise((resolve, reject) => resolve(post));
   }
 
   async getPostByUUID(postUUID: string): Promise<PostData | null> {
-    const startTime = Date.now();
     const posts: Array<any> = await Post.find({
       uuid: postUUID,
     }).sort({ createdAt: -1 });
-    const duration = Date.now() - startTime;
-    logger.info('POST WELL OBTAINED FROM DB: ', duration);
     return new Promise((resolve, reject) => resolve(posts[0]));
   }
 
@@ -76,30 +66,29 @@ export class MongoDbPostRepository implements PostsRepositoryInterface {
         slug: postSlug,
       },
       [
-        '_id',
-        'postFormat',
-        'title',
-        'featureImg',
-        'date',
-        'category',
-        'categoryName',
-        'categoryImg',
-        'postViews',
-        'readTime',
-        'authorName',
-        'authorImg',
-        'authorDesignation',
-        'authorBio',
-        'authorSocial',
-        'tags',
-        'uuid',
-        'content',
-        'slug',
+        "_id",
+        "postFormat",
+        "title",
+        "featureImg",
+        "date",
+        "category",
+        "categoryName",
+        "categoryImg",
+        "postViews",
+        "readTime",
+        "authorName",
+        "authorImg",
+        "authorDesignation",
+        "authorBio",
+        "authorSocial",
+        "tags",
+        "uuid",
+        "content",
+        "slug",
       ],
       {}
     ).sort({ createdAt: -1 });
     const duration = Date.now() - startTime;
-    logger.info('POST WELL OBTAINED FROM DB: ', duration);
     return new Promise((resolve, reject) => resolve(posts[0]));
   }
 
@@ -107,13 +96,11 @@ export class MongoDbPostRepository implements PostsRepositoryInterface {
     await Post.findByIdAndUpdate(postId, post, {
       new: true,
     });
-    logger.info('PUT DOCUMENT WELL UPDATED INTO DB');
     return postId;
   }
 
   async deletePostById(postId: string): Promise<string> {
     await Post.findByIdAndDelete(postId);
-    logger.info('DELETE DOCUMENT WELL DELETED INTO DB');
     return postId;
   }
 }

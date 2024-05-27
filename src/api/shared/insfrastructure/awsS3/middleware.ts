@@ -40,13 +40,13 @@ const multerOptions = {
     shouldTransform: true,
     transforms: [
       {
-        id: "original",
+        id: "small",
         key: function (
           req: any,
           file: { originalname: string },
           cb: (arg0: null, arg1: string) => void
         ) {
-          cb(null, S3_IMAGES_PATH + file.originalname);
+          cb(null, S3_IMAGES_PATH + "small/" + file.originalname);
         },
         transform: function (
           req: any,
@@ -54,10 +54,32 @@ const multerOptions = {
           cb: (arg0: null, arg1: sharp.Sharp) => void
         ) {
           //Perform desired transformations
-          logger.info("Transforming with sharp");
+          logger.info("Transforming with sharp small version");
           cb(
             null,
             sharp().resize(500, 500).toFormat("jpeg", { mozjpeg: true })
+          );
+        },
+      },
+      {
+        id: "medium",
+        key: function (
+          req: any,
+          file: { originalname: string },
+          cb: (arg0: null, arg1: string) => void
+        ) {
+          cb(null, S3_IMAGES_PATH + "medium/" + file.originalname);
+        },
+        transform: function (
+          req: any,
+          file: any,
+          cb: (arg0: null, arg1: sharp.Sharp) => void
+        ) {
+          //Perform desired transformations
+          logger.info("Transforming with sharp medium version");
+          cb(
+            null,
+            sharp().resize(800, 500).toFormat("jpeg", { mozjpeg: true })
           );
         },
       },
@@ -97,9 +119,14 @@ const handleProductImages = async (req: any, res: any, next: () => void) => {
         fileLocation;
       const images: any[] = [];
       fileArray.forEach((file: { originalname: string }) => {
-        const urlFile = S3_BASE_URL + "/" + S3_IMAGES_PATH + file.originalname;
-        logger.log("urlFile", urlFile);
-        images.push(urlFile);
+        const smallUrlFile =
+          S3_BASE_URL + "/" + S3_IMAGES_PATH + "small/" + file.originalname;
+        const mediumUrlFile =
+          S3_BASE_URL + "/" + S3_IMAGES_PATH + "medium/" + file.originalname;
+        logger.log("smallUrlFile", smallUrlFile);
+        logger.log("mediumUrlFile", mediumUrlFile);
+        images.push(smallUrlFile);
+        images.push(mediumUrlFile);
       });
       logger.log({
         status: "ok",

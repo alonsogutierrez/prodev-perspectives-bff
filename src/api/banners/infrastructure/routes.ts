@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import handleProductsImages from "./../../shared/insfrastructure/awsS3/middleware";
+import handleBannersImages from "../../shared/infrastructure/awsS3/uploadBanner";
 import { auth } from "./../../shared/auth_middleware";
 
 const logger = console;
@@ -8,19 +8,19 @@ const imagesRouter = express.Router();
 
 // POST images
 imagesRouter.post(
-  "/images",
-  [auth, handleProductsImages],
+  "/banners",
+  [auth, handleBannersImages],
   async (req: Request, res: Response) => {
     try {
-      res.status(201).send("Images well loaded");
+      res.status(201).send("Banners well loaded");
     } catch (error) {
-      let errorMessage: string = "Cant upload images, internal error";
+      let errorMessage: string = "Cant upload banners, internal error";
       if (error instanceof Error) {
         errorMessage += ": " + error.message;
       }
       logger.error(errorMessage);
       res.status(500).send({
-        error: "Cant upload images, internal error",
+        error: "Cant upload banners, internal error",
       });
     }
   }

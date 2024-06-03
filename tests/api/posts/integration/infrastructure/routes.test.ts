@@ -4,20 +4,20 @@ import app from "./../../../../../src/app";
 
 import postMock from "./mocks/post-mock.json";
 
-import { User } from "../../../../../src/api/users/insfrastructure/mongo-db/models/userSchema";
-import { MongoDbPostRepository } from "../../../../../src/api/posts/insfrastructure/mongo-db/mongoDbPostRepository";
+import { User } from "../../../../../src/api/users/infrastructure/mongo-db/models/userSchema";
+import { MongoDbPostRepository } from "../../../../../src/api/posts/infrastructure/mongo-db/mongoDbPostRepository";
 
 // Mock mongo db connection
-jest.mock("../../../../../src/api/shared/insfrastructure/mongoDbClient");
+jest.mock("../../../../../src/api/shared/infrastructure/mongoDbClient");
 
 // Mock the User
 jest.mock(
-  "../../../../../src/api/users/insfrastructure/mongo-db/models/userSchema"
+  "../../../../../src/api/users/infrastructure/mongo-db/models/userSchema"
 );
 
 // Mock MongoDbPostRepository
 jest.mock(
-  "../../../../../src/api/posts/insfrastructure/mongo-db/mongoDbPostRepository"
+  "../../../../../src/api/posts/infrastructure/mongo-db/mongoDbPostRepository"
 );
 
 describe("Integration test to create post", () => {

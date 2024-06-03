@@ -14,7 +14,7 @@ const s3 = new AWS.S3({
   region: process.env.S3_AWS_REGION,
 });
 
-const S3_BASE_URL: string = process.env.S3_BASE_URL!;
+const S3_PRODEV_BASE_URL: string = process.env.S3_PRODEV_BASE_URL!;
 const S3_IMAGES_PATH: string = process.env.S3_IMAGES_PATH!;
 
 const multerOptions = {
@@ -120,9 +120,17 @@ const handleProductImages = async (req: any, res: any, next: () => void) => {
       const images: any[] = [];
       fileArray.forEach((file: { originalname: string }) => {
         const smallUrlFile =
-          S3_BASE_URL + "/" + S3_IMAGES_PATH + "small/" + file.originalname;
+          S3_PRODEV_BASE_URL +
+          "/" +
+          S3_IMAGES_PATH +
+          "small/" +
+          file.originalname;
         const mediumUrlFile =
-          S3_BASE_URL + "/" + S3_IMAGES_PATH + "medium/" + file.originalname;
+          S3_PRODEV_BASE_URL +
+          "/" +
+          S3_IMAGES_PATH +
+          "medium/" +
+          file.originalname;
         logger.log("smallUrlFile", smallUrlFile);
         logger.log("mediumUrlFile", mediumUrlFile);
         images.push(smallUrlFile);

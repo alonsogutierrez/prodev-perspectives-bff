@@ -4,7 +4,7 @@ declare module "multer-s3-transform" {
 
   interface Options {
     s3: S3;
-    bucket: string;
+    bucket: any;
     acl?: string;
     shouldTransform?: boolean;
     metadata?: any;

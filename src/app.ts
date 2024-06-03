@@ -1,10 +1,11 @@
 import express from "express";
-import healthRouter from "./api/health/insfrastructure/route";
-import postsRouter from "./api/posts/insfrastructure/routes";
-import usersRouter from "./api/users/insfrastructure/routes";
-import imagesRouter from "./api/images/insfrastructure/routes";
+import healthRouter from "./api/health/infrastructure/route";
+import postsRouter from "./api/posts/infrastructure/routes";
+import usersRouter from "./api/users/infrastructure/routes";
+import imagesRouter from "./api/images/infrastructure/routes";
+import bannersRouter from "./api/banners/infrastructure/routes";
 
-import MongoDbClient from "./api/shared/insfrastructure/mongoDbClient";
+import MongoDbClient from "./api/shared/infrastructure/mongoDbClient";
 
 const app = express();
 
@@ -22,5 +23,6 @@ app.use(healthRouter);
 app.use(postsRouter);
 app.use(usersRouter);
 app.use(imagesRouter);
+app.use(bannersRouter);
 
 export default app;

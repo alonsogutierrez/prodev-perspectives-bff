@@ -21,7 +21,20 @@ const multerOptions = {
   storage: multerS3({
     s3: s3,
     acl: "public-read",
-    bucket: "prodevperspectives-images",
+    bucket: (
+      req: Request | any,
+      file: any,
+      cb: (error: any, bucket: string) => void
+    ) => {
+      const bucket: string | undefined = req.headers["bucket_name"] as
+        | string
+        | undefined;
+      if (!bucket) {
+        cb(new Error("Missing bucket in request headers"), "");
+      } else {
+        cb(null, bucket);
+      }
+    },
     metadata: (
       req: any,
       file: { fieldname: any },
@@ -90,7 +103,7 @@ const multerOptions = {
 
 const multerS3Instance = multer(multerOptions);
 
-const uploadProductS3 = multerS3Instance.array("images", 2);
+const uploadProductS3 = multerS3Instance.array("images", 30);
 
 const handleProductImages = async (req: any, res: any, next: () => void) => {
   try {
@@ -120,13 +133,13 @@ const handleProductImages = async (req: any, res: any, next: () => void) => {
       const images: any[] = [];
       fileArray.forEach((file: { originalname: string }) => {
         const smallUrlFile =
-          S3_PRODEV_BASE_URL +
+          req.headers["bucket_url"] +
           "/" +
           S3_IMAGES_PATH +
           "small/" +
           file.originalname;
         const mediumUrlFile =
-          S3_PRODEV_BASE_URL +
+          req.headers["bucket_url"] +
           "/" +
           S3_IMAGES_PATH +
           "medium/" +

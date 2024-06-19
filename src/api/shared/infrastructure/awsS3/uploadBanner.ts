@@ -16,85 +16,91 @@ const s3 = new AWS.S3({
 
 const S3_BANNERS_PATH: string = process.env.S3_BANNERS_PATH!;
 
-const multerOptions = multerS3({
-  s3: s3,
-  acl: "public-read",
-  bucket: (
-    req: Request | any,
-    file: any,
-    cb: (error: any, bucket: string) => void
-  ) => {
-    const bucket: string | undefined = req.headers["bucket_name"] as
-      | string
-      | undefined;
-    if (!bucket) {
-      cb(new Error("Missing bucket in request headers"), "");
-    } else {
-      cb(null, bucket);
-    }
-  },
-  metadata: (
-    req: any,
-    file: { fieldname: any },
-    callBack: (arg0: null, arg1: { fieldName: any }) => void
-  ) => {
-    callBack(null, { fieldName: file.fieldname });
-  },
-  key: (
-    req: any,
-    file: { originalname: string },
-    callBack: (arg0: null, arg1: string) => void
-  ) => {
-    const fullPath: string = S3_BANNERS_PATH + file.originalname; //If you want to save into a folder concat de name of the folder to the path
-    callBack(null, fullPath);
-  },
-  shouldTransform: true,
-  transforms: [
-    {
-      id: "small",
-      key: function (
-        req: any,
-        file: { originalname: string },
-        cb: (arg0: null, arg1: string) => void
-      ) {
-        cb(null, S3_BANNERS_PATH + "small/" + file.originalname);
-      },
-      transform: function (
-        req: any,
-        file: any,
-        cb: (arg0: null, arg1: sharp.Sharp) => void
-      ) {
-        //Perform desired transformations
-        logger.info("Transforming with sharp small version");
-        cb(null, sharp().resize(800, 300).toFormat("jpeg", { mozjpeg: true }));
-      },
+const multerOptions = {
+  storage: multerS3({
+    s3: s3,
+    acl: "public-read",
+    bucket: (
+      req: Request | any,
+      file: any,
+      cb: (error: any, bucket: string) => void
+    ) => {
+      const bucket: string | undefined = req.headers["bucket_name"] as
+        | string
+        | undefined;
+      if (!bucket) {
+        cb(new Error("Missing bucket in request headers"), "");
+      } else {
+        cb(null, bucket);
+      }
     },
-    {
-      id: "medium",
-      key: function (
-        req: any,
-        file: { originalname: string },
-        cb: (arg0: null, arg1: string) => void
-      ) {
-        cb(null, S3_BANNERS_PATH + "medium/" + file.originalname);
-      },
-      transform: function (
-        req: any,
-        file: any,
-        cb: (arg0: null, arg1: sharp.Sharp) => void
-      ) {
-        //Perform desired transformations
-        logger.info("Transforming with sharp medium version");
-        cb(null, sharp().resize(2000, 900).toFormat("jpeg", { mozjpeg: true }));
-      },
+    metadata: (
+      req: any,
+      file: { fieldname: any },
+      callBack: (arg0: null, arg1: { fieldName: any }) => void
+    ) => {
+      callBack(null, { fieldName: file.fieldname });
     },
-  ],
-});
-
-const multerS3Instance = multer({
-  storage: multerOptions,
+    key: (
+      req: any,
+      file: { originalname: string },
+      callBack: (arg0: null, arg1: string) => void
+    ) => {
+      const fullPath: string = S3_BANNERS_PATH + file.originalname; //If you want to save into a folder concat de name of the folder to the path
+      callBack(null, fullPath);
+    },
+    shouldTransform: true,
+    transforms: [
+      {
+        id: "small",
+        key: function (
+          req: any,
+          file: { originalname: string },
+          cb: (arg0: null, arg1: string) => void
+        ) {
+          cb(null, S3_BANNERS_PATH + "small/" + file.originalname);
+        },
+        transform: function (
+          req: any,
+          file: any,
+          cb: (arg0: null, arg1: sharp.Sharp) => void
+        ) {
+          //Perform desired transformations
+          logger.info("Transforming with sharp small version");
+          cb(
+            null,
+            sharp().resize(800, 300).toFormat("jpeg", { mozjpeg: true })
+          );
+        },
+      },
+      {
+        id: "medium",
+        key: function (
+          req: any,
+          file: { originalname: string },
+          cb: (arg0: null, arg1: string) => void
+        ) {
+          cb(null, S3_BANNERS_PATH + "medium/" + file.originalname);
+        },
+        transform: function (
+          req: any,
+          file: any,
+          cb: (arg0: null, arg1: sharp.Sharp) => void
+        ) {
+          //Perform desired transformations
+          logger.info("Transforming with sharp medium version");
+          cb(
+            null,
+            sharp().resize(2000, 900).toFormat("jpeg", { mozjpeg: true })
+          );
+        },
+      },
+    ],
+  }),
   limits: { fileSize: 50000000 },
-});
+};
+
+const multerS3Instance = multer(multerOptions);
 
 const uploadProductS3 = multerS3Instance.array("images", 2);
 

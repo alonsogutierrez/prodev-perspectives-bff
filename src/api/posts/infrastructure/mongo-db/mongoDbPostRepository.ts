@@ -7,7 +7,7 @@ const logger = console;
 export class MongoDbPostRepository implements PostsRepositoryInterface {
   async getAllPosts(
     page: number = 0,
-    limit: number = 10
+    limit: number = 5
   ): Promise<PostData[] | null> {
     const startTime = Date.now();
     const posts: Array<PostData> = await Post.find(
